@@ -129,24 +129,22 @@ hr {
 ========================================= */
 section {
   padding: 64px 24px;
-
-
-  color: var(--primary);
-  margin-bottom: 24px;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: all 0.6s ease;
 }
 
-.visible .section-label {
-  opacity: 1;
-  transform: translateY(0);
+.section-label {
+  font-family: var(--sans);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 24px;
 }
 
 .fade-up {
   opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translateY(20px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
 }
 
 .fade-up.visible {
@@ -221,8 +219,8 @@ section {
 }
 
 .hero h1 em {
+  color: var(--primary);
   font-style: italic;
-  color: var(--muted);
 }
 
 .hero-subtext {
@@ -484,17 +482,6 @@ section {
   right: 22%;
   margin-top: -130px;
   margin-right: -130px;
-  animation: slowRotate 30s linear infinite;
-}
-
-@keyframes slowRotate {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 .ring-node {
@@ -611,18 +598,18 @@ section {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-
-
-  font-weight: 400;
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  cursor: default;
 }
 
-.chip:hover {
-  transform: translateY(-2px);
-  background: var(--bg);
-  border-color: var(--primary);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border: 0.5px solid var(--border-s);
+  border-radius: 20px;
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 400;
 }
 
 .chip-icon {
@@ -739,21 +726,15 @@ section {
   border-bottom: 0.5px solid var(--border);
   text-decoration: none;
   color: var(--text);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: background 0.2s ease;
+}
+
+.article-row:last-child {
+  border-bottom: none;
 }
 
 .article-row:hover {
-  padding-left: 32px;
-  background: rgba(9, 120, 231, 0.03);
-}
-
-.article-row:hover .art-title {
-  color: var(--primary);
-}
-
-.article-row:hover .arr {
-  transform: translateX(8px);
-  color: var(--primary);
+  background: var(--bg);
 }
 
 .art-date {
@@ -827,16 +808,16 @@ section {
   align-items: center;
   gap: 8px;
   padding: 8px 16px;
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  transition: color 0.2s ease-in-out;
   background: var(--surface);
+
 }
 
 .c-link:hover {
-  background: var(--primary);
-  color: white;
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 20px rgba(9, 120, 231, 0.2);
-  border-color: transparent;
+  background: var(--text);
+  color: var(--bg);
+  transform: translateY(-2px);
+  color: #f8ab2f;
 }
 
 /* =========================================

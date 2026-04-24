@@ -5,6 +5,8 @@
 // Generated with jaspr_builder
 
 import 'package:jaspr/client.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:firebase_core_web/firebase_core_web.dart' as _firebase_core_web;
 
 /// Default [ClientOptions] for use with your Jaspr project.
 ///
@@ -22,4 +24,10 @@ import 'package:jaspr/client.dart';
 ///   runApp(...);
 /// }
 /// ```
-ClientOptions get defaultClientOptions => ClientOptions();
+ClientOptions get defaultClientOptions => ClientOptions(
+  initialize: () {
+    final Registrar registrar = webPluginRegistrar;
+    _firebase_core_web.FirebaseCoreWeb.registerWith(registrar);
+    registrar.registerMessageHandler();
+  },
+);
