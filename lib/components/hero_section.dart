@@ -15,7 +15,7 @@ class HeroSection extends StatelessComponent {
         h1([
           Component.text('Building apps that work '),
           br(),
-          span(classes: 'text-accent', [Component.text('everywhere')]),
+          em([Component.text('everywhere')]),
         ]),
         p(classes: 'hero-subtext', [
           Component.text(

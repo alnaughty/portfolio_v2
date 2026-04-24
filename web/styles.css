@@ -219,8 +219,8 @@ section {
 }
 
 .hero h1 em {
+  color: var(--primary);
   font-style: italic;
-  color: var(--muted);
 }
 
 .hero-subtext {
