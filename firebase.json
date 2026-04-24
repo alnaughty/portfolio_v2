@@ -1,0 +1,28 @@
+{
+  "hosting": {
+    "public": "build/jaspr",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  },
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "zeuscaj-portfolio",
+          "configurations": {
+            "web": "1:555512872629:web:53d0ba1193c38fcf1288fc"
+          }
+        }
+      }
+    }
+  }
+}
