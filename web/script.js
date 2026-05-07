@@ -1,178 +1,316 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. Intersection Observer for fade-ups
-  const observerOptions = {
-    threshold: 0.12,
-    rootMargin: '0px 0px -50px 0px'
-  };
+// =====================================================================
+// PORTFOLIO SCRIPT - Interactive Atom Background + UI Interactions
+// =====================================================================
 
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        
-        // If it's the skills section, trigger the progress bars
-        if (entry.target.id === 'skills') {
-          const fills = document.querySelectorAll('.p-fill');
-          fills.forEach((fill, idx) => {
-            setTimeout(() => {
-              fill.classList.add('visible');
-            }, idx * 120); // 120ms stagger
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ----------------------------------------------------------------
+  // 1. INTERACTIVE ATOM CANVAS BACKGROUND
+  // ----------------------------------------------------------------
+  const canvas = document.getElementById('atom-canvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let atomsArray = [];
+    let time = 0;
+    let animId;
+
+    const mouse = { x: -2000, y: -2000, radius: 220 };
+
+    const handleMouseMove = (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    };
+
+    const handleMouseOut = () => {
+      mouse.x = -2000;
+      mouse.y = -2000;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseout', handleMouseOut);
+
+    class Atom {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 0.45;
+        this.vy = (Math.random() - 0.5) * 0.45;
+        this.scale = Math.random() * 1.4 + 0.35;
+
+        // Nucleus particles
+        this.nucleusParticles = [];
+        const n = Math.floor(Math.random() * 5) + 3;
+        for (let i = 0; i < n; i++) {
+          this.nucleusParticles.push({
+            angle: Math.random() * Math.PI * 2,
+            dist: Math.random() * 2.5 * this.scale,
+            baseHue: Math.random() > 0.5 ? 150 : 210,
+            timeOffset: Math.random() * 10,
           });
         }
-      }
-    });
-  }, observerOptions);
 
-  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-
-  // 2. Parallax & Auto-float Logic
-  const hero = document.getElementById('hero');
-  const sceneElements = [
-    { el: document.getElementById('el0'), depth: 0.035, sp: 0.9 },
-    { el: document.getElementById('el1'), depth: 0.055, sp: 1.1 },
-    { el: document.getElementById('el2'), depth: 0.025, sp: 1.3 },
-    { el: document.getElementById('el3'), depth: 0.07,  sp: 0.8 },
-    { el: document.getElementById('el4'), depth: 0.06,  sp: 1.0 },
-    { el: document.getElementById('ring'), depth: -0.02, sp: 0.5 }
-  ];
-
-  const cursorRing = document.getElementById('cursor-ring');
-  const cursorDot = document.getElementById('cursor-dot');
-  
-  // State
-  let isMouseInHero = false;
-  let isMobile = window.innerWidth <= 640;
-  
-  // Parallax Targets
-  let targetNormX = 0.5;
-  let targetNormY = 0.5;
-  let currentNormX = 0.5;
-  let currentNormY = 0.5;
-  
-  // Cursor Targets
-  let mouseX = window.innerWidth / 2;
-  let mouseY = window.innerHeight / 2;
-  let cursorRingX = mouseX;
-  let cursorRingY = mouseY;
-  let cursorDotX = mouseX;
-  let cursorDotY = mouseY;
-
-  // Time for auto-float
-  let autoT = 0;
-  let mobileT = 0;
-  
-  let animationFrameId = null;
-
-  // Orbit rotation
-  let orbitRot = 0;
-
-  function lerp(start, end, amt) {
-    return (1 - amt) * start + amt * end;
-  }
-
-  // Update layout state on resize
-  window.addEventListener('resize', () => {
-    isMobile = window.innerWidth <= 640;
-  });
-
-  // Mouse event listeners for hero
-  if (hero) {
-    hero.addEventListener('mouseenter', (e) => {
-      if (isMobile) return;
-      isMouseInHero = true;
-      cursorRing.style.opacity = '1';
-      cursorDot.style.opacity = '1';
-      
-      // Instantly set cursor position to avoid flying from center
-      cursorRingX = cursorDotX = mouseX = e.clientX;
-      cursorRingY = cursorDotY = mouseY = e.clientY;
-    });
-
-    hero.addEventListener('mousemove', (e) => {
-      if (isMobile) return;
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      
-      const rect = hero.getBoundingClientRect();
-      targetNormX = (e.clientX - rect.left) / rect.width;
-      targetNormY = (e.clientY - rect.top) / rect.height;
-    });
-
-    hero.addEventListener('mouseleave', () => {
-      if (isMobile) return;
-      isMouseInHero = false;
-      cursorRing.style.opacity = '0';
-      cursorDot.style.opacity = '0';
-    });
-  }
-
-  function loop() {
-    if (isMobile) {
-      // Mobile card cluster float (ignores mouse)
-      mobileT += 0.012;
-      sceneElements.forEach((item, index) => {
-        if (!item.el || item.el.id === 'el3' || item.el.id === 'ring') return; // hidden on mobile
-        
-        const dx = 15;
-        const dy = 15;
-        const sp = item.sp;
-        const baseRot = index === 0 ? -6 : index === 1 ? -3 : index === 2 ? 5 : 4;
-        
-        const tx = dx * Math.sin(mobileT * sp);
-        const ty = dy * Math.cos(mobileT * sp * 0.8);
-        const rot = baseRot + Math.sin(mobileT * sp * 0.6) * 2.5;
-        
-        item.el.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg)`;
-      });
-    } else {
-      // Desktop logic
-      if (isMouseInHero) {
-        // Mouse parallax
-        currentNormX = lerp(currentNormX, targetNormX, 0.09);
-        currentNormY = lerp(currentNormY, targetNormY, 0.09);
-        
-        // Custom cursor
-        cursorRingX = lerp(cursorRingX, mouseX, 0.18);
-        cursorRingY = lerp(cursorRingY, mouseY, 0.18);
-        cursorDotX = lerp(cursorDotX, mouseX, 0.18);
-        cursorDotY = lerp(cursorDotY, mouseY, 0.18);
-        
-        if (cursorRing && cursorDot) {
-          cursorRing.style.transform = `translate(calc(${cursorRingX}px - 50%), calc(${cursorRingY}px - 50%))`;
-          cursorDot.style.transform = `translate(calc(${cursorDotX}px - 50%), calc(${cursorDotY}px - 50%))`;
-        }
-      } else {
-        // Auto sine-wave float
-        autoT += 0.007;
-        targetNormX = 0.5 + Math.sin(autoT * 0.9) * 0.26;
-        targetNormY = 0.5 + Math.cos(autoT * 1.1) * 0.20;
-        
-        currentNormX = lerp(currentNormX, targetNormX, 0.018);
-        currentNormY = lerp(currentNormY, targetNormY, 0.018);
+        this.baseOrbitSize = (Math.random() * 14 + 13) * this.scale;
+        this.currentOrbitSize = this.baseOrbitSize;
+        this.tilts = [0, Math.PI / 3, (Math.PI * 2) / 3];
+        this.electronAngles = [
+          Math.random() * Math.PI,
+          Math.random() * Math.PI,
+          Math.random() * Math.PI,
+        ];
+        this.electronBaseHues = [150, 175, 210];
+        this.baseSpinSpeed = (Math.random() * 0.02 + 0.008) * (1 / this.scale);
+        this.spinSpeed = this.baseSpinSpeed;
       }
 
-      // Apply transforms
-      const tx = (currentNormX - 0.5) * 1200;
-      const ty = (currentNormY - 0.5) * 800;
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x > canvas.width || this.x < 0) this.vx = -this.vx;
+        if (this.y > canvas.height || this.y < 0) this.vy = -this.vy;
 
-      orbitRot += (360 / (18 * 60)); // ~360deg per 18s at 60fps
-      if (orbitRot >= 360) orbitRot -= 360;
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
 
-      sceneElements.forEach(item => {
-        if (!item.el) return;
-        if (item.el.id === 'ring') {
-          const shiftX = tx * item.depth * 0.5;
-          const shiftY = ty * item.depth * 0.5;
-          item.el.style.transform = `translate(${shiftX}px, ${shiftY}px) rotate(${orbitRot}deg)`;
-        } else {
-          item.el.style.transform = `translate(${tx * item.depth}px, ${ty * item.depth}px)`;
+        let targetOrbit = this.baseOrbitSize;
+        let targetSpin = this.baseSpinSpeed;
+
+        if (dist < mouse.radius && dist > 0) {
+          const inf = 1 - dist / mouse.radius;
+          this.x -= (dx / dist) * inf * 1.4;
+          this.y -= (dy / dist) * inf * 1.4;
+          targetOrbit = this.baseOrbitSize + inf * 22 * this.scale;
+          targetSpin = this.baseSpinSpeed + inf * 0.12;
         }
-      });
+
+        this.currentOrbitSize += (targetOrbit - this.currentOrbitSize) * 0.1;
+        this.spinSpeed += (targetSpin - this.spinSpeed) * 0.1;
+        for (let i = 0; i < 3; i++) {
+          this.electronAngles[i] += this.spinSpeed;
+        }
+      }
+
+      draw(t) {
+        const op = 0.38;
+
+        // Nucleus
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(t * this.spinSpeed * 0.18);
+        this.nucleusParticles.forEach((p) => {
+          const nx = Math.cos(p.angle) * p.dist;
+          const ny = Math.sin(p.angle) * p.dist;
+          const hue = p.baseHue + Math.sin(t * 2 + p.timeOffset) * 22;
+          ctx.beginPath();
+          ctx.arc(nx, ny, 1.4 * this.scale, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${hue},82%,60%,${op * 2.4})`;
+          ctx.fill();
+        });
+        ctx.restore();
+
+        // Orbits + electrons
+        for (let i = 0; i < 3; i++) {
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.tilts[i]);
+
+          const orbitHue = 150 + Math.sin(t + i) * 18;
+
+          ctx.beginPath();
+          ctx.ellipse(0, 0, this.currentOrbitSize, this.currentOrbitSize * 0.28, 0, 0, Math.PI * 2);
+          ctx.strokeStyle = `hsla(${orbitHue},78%,52%,${op * 0.28})`;
+          ctx.lineWidth = Math.max(0.5, 0.9 * this.scale);
+          ctx.stroke();
+
+          const ex = Math.cos(this.electronAngles[i]) * this.currentOrbitSize;
+          const ey = Math.sin(this.electronAngles[i]) * (this.currentOrbitSize * 0.28);
+          const eHue = this.electronBaseHues[i] + Math.cos(t * 3 + i) * 28;
+
+          ctx.beginPath();
+          ctx.arc(ex, ey, 1.6 * this.scale, 0, Math.PI * 2);
+          ctx.fillStyle = `hsla(${eHue},90%,65%,${op * 3.2})`;
+          ctx.shadowBlur = 7 * this.scale;
+          ctx.shadowColor = `hsla(${eHue},90%,65%,1)`;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+          ctx.restore();
+        }
+      }
     }
 
-    animationFrameId = requestAnimationFrame(loop);
+    function drawBonds(t) {
+      for (let a = 0; a < atomsArray.length; a++) {
+        for (let b = a + 1; b < atomsArray.length; b++) {
+          const dx = atomsArray[a].x - atomsArray[b].x;
+          const dy = atomsArray[a].y - atomsArray[b].y;
+          const d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 100) {
+            const op = (1 - d / 100) * 0.13;
+            const h = 158 + Math.sin(t * 1.4 + d * 0.01) * 28;
+            ctx.strokeStyle = `hsla(${h},78%,55%,${op})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(atomsArray[a].x, atomsArray[a].y);
+            ctx.lineTo(atomsArray[b].x, atomsArray[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function initAtoms() {
+      atomsArray = [];
+      const count = Math.floor((canvas.width * canvas.height) / 32000);
+      for (let i = 0; i < count; i++) atomsArray.push(new Atom());
+    }
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      initAtoms();
+    }
+
+    function animate() {
+      time += 0.018;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      atomsArray.forEach((a) => { a.update(); a.draw(time); });
+      drawBonds(time);
+      animId = requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    animate();
   }
 
-  // Start loop
-  loop();
+  // ----------------------------------------------------------------
+  // 2. NAVBAR SCROLL BEHAVIOR
+  // ----------------------------------------------------------------
+  const navbar = document.querySelector('.navbar');
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // 3. FADE-IN ON SCROLL (IntersectionObserver)
+  // ----------------------------------------------------------------
+  const fadeEls = document.querySelectorAll('.fade-in');
+  if (fadeEls.length) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+            const delay = el.dataset.delay || 0;
+            setTimeout(() => el.classList.add('visible'), parseInt(delay));
+            observer.unobserve(el);
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+    fadeEls.forEach((el) => observer.observe(el));
+  }
+
+  // ----------------------------------------------------------------
+  // 4. MOBILE MENU
+  // ----------------------------------------------------------------
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuIconOpen = document.getElementById('menu-icon-open');
+  const menuIconClose = document.getElementById('menu-icon-close');
+
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      menuIconOpen.style.display = isOpen ? 'none' : 'block';
+      menuIconClose.style.display = isOpen ? 'block' : 'none';
+    });
+
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        menuIconOpen.style.display = 'block';
+        menuIconClose.style.display = 'none';
+      });
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // 5. CONTACT FORM HANDLING
+  // ----------------------------------------------------------------
+  const form = document.getElementById('contact-form');
+  const submitBtn = document.getElementById('form-submit-btn');
+  const submitText = document.getElementById('submit-text');
+  const submitSpinner = document.getElementById('submit-spinner');
+  const submitCheck = document.getElementById('submit-check');
+
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Show loading state
+      submitBtn.disabled = true;
+      submitText.textContent = 'Sending...';
+      if (submitSpinner) submitSpinner.style.display = 'inline-block';
+      if (submitCheck) submitCheck.style.display = 'none';
+
+      // Simulate send (replace with real API call)
+      setTimeout(() => {
+        submitBtn.classList.add('success');
+        submitText.textContent = 'Message Sent!';
+        if (submitSpinner) submitSpinner.style.display = 'none';
+        if (submitCheck) submitCheck.style.display = 'inline-block';
+        form.reset();
+
+        setTimeout(() => {
+          submitBtn.classList.remove('success');
+          submitBtn.disabled = false;
+          submitText.textContent = 'Send Message';
+          if (submitCheck) submitCheck.style.display = 'none';
+        }, 5000);
+      }, 1500);
+    });
+  }
+
+  // ----------------------------------------------------------------
+  // 6. HERO PARALLAX & MOUSE-FOLLOWING BLOBS
+  // ----------------------------------------------------------------
+  const heroImage = document.querySelector('.hero-image-container');
+  const heroBadges = document.querySelectorAll('.float-badge');
+  const blob1 = document.querySelector('.hero-bg-blob-1');
+  const blob2 = document.querySelector('.hero-bg-blob-2');
+  const heroSection = document.getElementById('hero');
+
+  if (heroSection) {
+    window.addEventListener('mousemove', (e) => {
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+      
+      const x = (clientX - innerWidth / 2) / 35;
+      const y = (clientY - innerHeight / 2) / 35;
+      
+      // Move hero image slightly
+      if (heroImage) {
+        heroImage.style.transform = `translate(${x}px, ${y}px)`;
+      }
+      
+      // Move floating badges in opposite direction for depth
+      heroBadges.forEach((badge, i) => {
+        const factor = (i + 1) * 1.5;
+        badge.style.transform = `translate(${-x * factor}px, ${-y * factor}px)`;
+      });
+
+      // Move background blobs for parallax effect
+      if (blob1) blob1.style.transform = `translate(${x * 0.5}px, ${y * 0.5}px)`;
+      if (blob2) blob2.style.transform = `translate(${-x * 0.8}px, ${-y * 0.2}px)`;
+    });
+  }
+
 });

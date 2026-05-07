@@ -24,5 +24,13 @@
         }
       }
     }
+  },
+  "auth": {
+    "providers": {
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Rikimaru AI",
+        "supportEmail": "cajuraozeus4@gmail.com"
+      }
+    }
   }
 }

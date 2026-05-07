@@ -4,8 +4,8 @@ import 'package:jaspr/jaspr.dart';
 import '../components/navbar.dart';
 import '../components/hero_section.dart';
 import '../components/about_section.dart';
-import '../components/skills_section.dart';
-import '../components/writing_section.dart';
+import '../components/experience_section.dart';
+import '../components/projects_section.dart';
 import '../components/contact_section.dart';
 import '../components/footer.dart';
 
@@ -16,11 +16,11 @@ class Home extends StatelessComponent {
   Component build(BuildContext context) {
     return Component.fragment([
       Navbar(),
-      main_(classes: 'container', [
+      main_(classes: 'site-main', [
         HeroSection(),
         AboutSection(),
-        SkillsSection(),
-        WritingSection(),
+        ExperienceSection(),
+        ProjectsSection(),
         ContactSection(),
       ]),
       Footer(),

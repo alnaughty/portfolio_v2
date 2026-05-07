@@ -8,9 +8,19 @@ class App extends StatelessComponent {
 
   @override
   Component build(BuildContext context) {
-    return div([
-      div(classes: 'cursor-ring', id: 'cursor-ring', []),
-      div(classes: 'cursor-dot', id: 'cursor-dot', []),
+    return Component.fragment([
+      // Fixed atom canvas background
+      Component.element(tag: 'canvas', id: 'atom-canvas', children: []),
+
+      // Mobile menu overlay
+      div(id: 'mobile-menu', classes: 'mobile-menu', [
+        a(href: '#about', [Component.text('About')]),
+        a(href: '#experience', [Component.text('Experience')]),
+        a(href: '#projects', [Component.text('Projects')]),
+        a(href: '#contact', [Component.text('Contact')]),
+      ]),
+
+      // Main app
       Home(),
     ]);
   }

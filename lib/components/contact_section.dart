@@ -1,47 +1,138 @@
 import 'package:jaspr/dom.dart';
 import 'package:jaspr/jaspr.dart';
 
+import '../constants/data.dart';
+
 class ContactSection extends StatelessComponent {
   const ContactSection({super.key});
 
   @override
   Component build(BuildContext context) {
-    return section(classes: 'contact fade-up', id: 'contact', [
-      div(classes: 'section-label', [Component.text('04 — Contact')]),
-      div(classes: 'contact-card', [
-        h2([Component.text('Have an app idea?'), br(), Component.text('Let\'s make it real.')]),
-        p([
+    return section(id: 'contact', [
+      // Glow effect
+      div(classes: 'contact-glow', []),
+
+      // Eyebrow label
+      div(
+        classes: 'contact-eyebrow fade-in',
+        [Component.text("WHAT'S NEXT?")],
+      ),
+
+      // Title
+      h2(
+        classes: 'contact-title fade-in',
+        attributes: {'data-delay': '100'},
+        [Component.text('Get In Touch')],
+      ),
+
+      // Subtitle
+      p(
+        classes: 'contact-subtitle fade-in',
+        attributes: {'data-delay': '200'},
+        [
           Component.text(
-            'Whether it\'s a cross-platform app, a backend API, or you need someone who can do both — I\'d love to hear about what you\'re building.',
+            "I'm currently looking for new opportunities. Whether you have a question, a project idea, or just want to say hi, I'll try my best to get back to you!",
           ),
-        ]),
-        div(classes: 'contact-links', [
-          a(href: 'mailto:official.zeuscajurao@gmail.com', target: Target.blank, classes: 'c-link', [
-            RawText(
-              '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>',
-            ),
-            Component.text(' Email me'),
+        ],
+      ),
+
+      // Contact form
+      form(
+        id: 'contact-form',
+        classes: 'contact-form fade-in',
+        attributes: {'data-delay': '300'},
+        [
+          // Name + Email row
+          div(classes: 'form-row', [
+            div(classes: 'form-group', [
+              label(
+                htmlFor: 'contact-name',
+                classes: 'form-label',
+                [Component.text('Name')],
+              ),
+              input(
+                id: 'contact-name',
+                name: 'name',
+                type: InputType.text,
+                classes: 'form-input',
+                attributes: {'placeholder': 'John Doe', 'required': ''},
+              ),
+            ]),
+            div(classes: 'form-group', [
+              label(
+                htmlFor: 'contact-email',
+                classes: 'form-label',
+                [Component.text('Email')],
+              ),
+              input(
+                id: 'contact-email',
+                name: 'email',
+                type: InputType.email,
+                classes: 'form-input',
+                attributes: {'placeholder': 'john@example.com', 'required': ''},
+              ),
+            ]),
           ]),
-          a(href: 'https://www.linkedin.com/in/zeus-cajurao-600262243/', target: Target.blank, classes: 'c-link', [
-            RawText(
-              '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>',
+
+          // Message
+          div(classes: 'form-group', [
+            label(
+              htmlFor: 'contact-message',
+              classes: 'form-label',
+              [Component.text('Message')],
             ),
-            Component.text(' LinkedIn'),
-          ]),
-          a(href: 'https://github.com/alnaughty', target: Target.blank, classes: 'c-link', [
-            RawText(
-              '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.02c3.14-.35 6.5-1.4 6.5-7a4.6 4.6 0 0 0-1.39-3.2 4.2 4.2 0 0 0-.14-3.2s-1.12-.35-3.5 1.25a12.1 12.1 0 0 0-6.2 0C6.62 3.25 5.5 3.6 5.5 3.6a4.2 4.2 0 0 0-.14 3.2A4.6 4.6 0 0 0 4 12.8c0 5.58 3.36 6.63 6.4 7-.34.3-.65.8-.75 1.5-.2.1-.8.3-2.2-.8-.4-.6-1-.9-1-.9-.6-.1-.1-.1-.1-.1.7.1 1.2.6 1.2.6.6 1.1 1.8 1.1 2.8.8v2.5"/><path d="M9 21c-3 1-5-1-5-1"/></svg>',
+            textarea(
+              id: 'contact-message',
+              name: 'message',
+              rows: 5,
+              classes: 'form-textarea',
+              required: true,
+              placeholder: "Hello! I'd like to discuss...",
+              [],
             ),
-            Component.text(' Github'),
           ]),
-          a(href: '#', classes: 'c-link', [
-            RawText(
-              '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>',
+
+          // Footer: Submit + direct email
+          div(classes: 'form-footer', [
+            button(
+              id: 'form-submit-btn',
+              type: ButtonType.submit,
+              classes: 'btn-submit',
+              [
+                RawText('''
+                  <svg id="submit-spinner" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="spin" style="display:none">
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
+                  </svg>
+                  <svg id="submit-check" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" id="submit-icon"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" x2="11" y1="2" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  </svg>
+                '''),
+                span(id: 'submit-text', [Component.text('Send Message')]),
+              ],
             ),
-            Component.text(' Resume'),
+            a(
+              href: 'mailto:${PersonalInfo.email}',
+              classes: 'direct-email-link',
+              [
+                Component.text('or email me directly '),
+                RawText(
+                  '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>',
+                ),
+              ],
+            ),
           ]),
-        ]),
-      ]),
+        ],
+      ),
     ]);
   }
 }
