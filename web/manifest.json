@@ -1,11 +1,11 @@
 {
-    "name": "portfolio",
-    "short_name": "portfolio",
-    "start_url": ".",
+    "name": "Zeus Cajurao - Portfolio",
+    "short_name": "Zeus Portfolio",
+    "start_url": "/",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Jaspr project",
+    "background_color": "#09090b",
+    "theme_color": "#10b981",
+    "description": "Senior Flutter developer crafting high-performance cross-platform apps.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

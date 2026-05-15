@@ -1,5 +1,17 @@
 // --- DATA CONFIGURATION ---
 
+class MetaDataConfig {
+  static const String title = "Zeus Cajurao — Senior Flutter Developer";
+  static const String description =
+      "Senior Flutter developer crafting high-performance cross-platform apps. Expert in Dart, Firebase, Laravel and exploring Web3 and game dev.";
+  static const String author = "Zeus Cajurao";
+  static const String keywords =
+      "Flutter, Dart, Jaspr, Web3, Game Dev, Senior Developer, Portfolio, Zeus Cajurao, Laravel, Firebase, Flame Engine";
+  static const String ogImage = "/assets/picture.jpeg";
+  static const String twitterHandle = "@alnaughty"; // Assuming based on github name
+  static const String siteUrl = "https://zeuscajurao.dev"; // Placeholder if not known
+}
+
 class PersonalInfo {
   static const String name = "Zeus Cajurao";
   static const String firstName = "Zeus";
@@ -148,13 +160,13 @@ class ExperienceData {
       description:
           "Specialized in developing custom mobile and web solutions for diverse clients. Focused on rapid prototyping, MVP development, and seamless cloud integration using Firebase and Laravel ecosystems.",
     ),
-    Experience(
-      id: 4,
-      role: "Flutter Developer (Android)",
-      company: "Techtierra",
-      period: "Jan 2026 - Jun 2026",
-      description:
-          "Dedicated to building high-performance Android applications using Flutter. Implementing native integrations, optimizing UI rendering, and ensuring exceptional user experiences across the Android device landscape.",
-    ),
+    // Experience(
+    //   id: 4,
+    //   role: "Flutter Developer (Android)",
+    //   company: "Techtierra",
+    //   period: "Jan 2026 - Jun 2026",
+    //   description:
+    //       "Dedicated to building high-performance Android applications using Flutter. Implementing native integrations, optimizing UI rendering, and ensuring exceptional user experiences across the Android device landscape.",
+    // ),
   ];
 }
