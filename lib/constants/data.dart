@@ -34,7 +34,6 @@ class PersonalInfo {
   static const String github = "https://github.com/alnaughty";
   static const String linkedin = "https://www.linkedin.com/in/zeus-cajurao-600262243/";
   static const String profileImage = "assets/picture.jpg";
-  static const String formSubmitToken = "e073434c716ff772ab483bddac66cac2";
 }
 
 class SkillsData {
