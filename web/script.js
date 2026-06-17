@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
           this.nucleusParticles.push({
             angle: Math.random() * Math.PI * 2,
             dist: Math.random() * 2.5 * this.scale,
-            baseHue: Math.random() > 0.5 ? 150 : 210,
+            baseHue: Math.random() > 0.5 ? 24 : 38,
             timeOffset: Math.random() * 10,
           });
         }
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
           Math.random() * Math.PI,
           Math.random() * Math.PI,
         ];
-        this.electronBaseHues = [150, 175, 210];
+        this.electronBaseHues = [18, 28, 42];
         this.baseSpinSpeed = (Math.random() * 0.02 + 0.008) * (1 / this.scale);
         this.spinSpeed = this.baseSpinSpeed;
       }
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
           ctx.translate(this.x, this.y);
           ctx.rotate(this.tilts[i]);
 
-          const orbitHue = 150 + Math.sin(t + i) * 18;
+          const orbitHue = 24 + Math.sin(t + i) * 12;
 
           ctx.beginPath();
           ctx.ellipse(0, 0, this.currentOrbitSize, this.currentOrbitSize * 0.28, 0, 0, Math.PI * 2);
@@ -124,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           const ex = Math.cos(this.electronAngles[i]) * this.currentOrbitSize;
           const ey = Math.sin(this.electronAngles[i]) * (this.currentOrbitSize * 0.28);
-          const eHue = this.electronBaseHues[i] + Math.cos(t * 3 + i) * 28;
+          const eHue = this.electronBaseHues[i] + Math.cos(t * 3 + i) * 15;
 
           ctx.beginPath();
           ctx.arc(ex, ey, 1.6 * this.scale, 0, Math.PI * 2);
@@ -146,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
           const d = Math.sqrt(dx * dx + dy * dy);
           if (d < 100) {
             const op = (1 - d / 100) * 0.13;
-            const h = 158 + Math.sin(t * 1.4 + d * 0.01) * 28;
+            const h = 28 + Math.sin(t * 1.4 + d * 0.01) * 12;
             ctx.strokeStyle = `hsla(${h},78%,55%,${op})`;
             ctx.lineWidth = 0.8;
             ctx.beginPath();

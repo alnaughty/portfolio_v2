@@ -91,7 +91,11 @@ class ProjectsSection extends StatelessComponent {
 
         // Project body
         div(classes: 'project-body', [
-          div(classes: 'project-title', [Component.text(project.title)]),
+          div(classes: 'project-title', [
+            Component.text(project.title),
+            if (project.unpublished)
+              span(classes: 'project-badge-unpublished', [Component.text('Unpublished')]),
+          ]),
           p(classes: 'project-desc', [Component.text(project.description)]),
           div(classes: 'project-tech', [
             for (final tag in project.tech)

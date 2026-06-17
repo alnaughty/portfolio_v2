@@ -7,7 +7,7 @@ class MetaDataConfig {
   static const String author = "Zeus Cajurao";
   static const String keywords =
       "Flutter, Dart, Jaspr, Web3, Game Dev, Senior Developer, Portfolio, Zeus Cajurao, Laravel, Firebase, Flame Engine";
-  static const String ogImage = "/assets/picture.jpeg";
+  static const String ogImage = "/assets/picture.jpg";
   static const String twitterHandle = "@alnaughty"; // Assuming based on github name
   static const String siteUrl = "https://zeuscajurao.dev"; // Placeholder if not known
 }
@@ -33,7 +33,7 @@ class PersonalInfo {
   static const String email = "official.zeuscajurao@gmail.com";
   static const String github = "https://github.com/alnaughty";
   static const String linkedin = "https://www.linkedin.com/in/zeus-cajurao-600262243/";
-  static const String profileImage = "assets/picture.jpeg";
+  static const String profileImage = "assets/picture.jpg";
 }
 
 class SkillsData {
@@ -62,6 +62,7 @@ class Project {
   final String? appStore;
   final String? playStore;
   final String image;
+  final bool unpublished;
 
   const Project({
     required this.id,
@@ -73,11 +74,50 @@ class Project {
     this.appStore,
     this.playStore,
     required this.image,
+    this.unpublished = false,
   });
 }
 
 class ProjectsData {
   static const List<Project> projects = [
+    Project(
+      id: 8,
+      title: "Tranyx",
+      description:
+          "A localized service bridging and logistics rental platform designed for the Philippine market. Engineered using Flutter and Jaspr for seamless cross-platform mobile and web experiences, featuring real-time location checkpoints, automated escrow releases, and a Solana Web3 roadmap for publishing on the Solana dApp Store.",
+      tech: ["Flutter", "Jaspr", "Firebase", "Solana", "Web3", "Maps API"],
+      image: "assets/tranyx.jpg",
+      unpublished: true,
+    ),
+    Project(
+      id: 7,
+      title: "Leggo Driver (Android)",
+      description:
+          "Developed the Android driver-partner application for Leggo, a ride-hailing platform using Flutter. Engineered real-time navigation and booking dispatch using the Google Navigation SDK, WebSocket channels, and state management powered by Riverpod.",
+      tech: ["Flutter", "Riverpod", "Google Navigation", "WebSockets", "Android"],
+      image: "assets/leggo.jpg",
+      unpublished: true,
+    ),
+
+    Project(
+      id: 5,
+      title: "Nom Nom Delivery",
+      description:
+          "A modern, high-performance food delivery application connecting users with global chains and local culinary gems. Features real-time tracking from preparation to transit.",
+      tech: ["Flutter", "Dart", "Firebase", "State Management", "Maps API"],
+      appStore: "https://apps.apple.com/ph/app/nom-nom-delivery/id6739423049",
+      playStore: "https://play.google.com/store/apps/details?id=com.nomnomapp.nomnom&hl=en",
+      image: "assets/nomnom.jpg",
+    ),
+    Project(
+      id: 6,
+      title: "Khepren",
+      description:
+          "An all-in-one decentralized finance (DeFi) platform designed for secure asset staking, token launchpads, and stakeholder management. Built with optimized yield calculations and clean Web3 integrations.",
+      tech: ["Flutter", "Dart", "Web3", "Smart Contracts", "DeFi"],
+      image: "assets/khepren.jpg",
+      unpublished: true,
+    ),
     Project(
       id: 4,
       title: "ShapeYou - Fitness App",
@@ -86,25 +126,7 @@ class ProjectsData {
       tech: ["Flutter", "Dart", "Firebase", "Health APIs"],
       appStore: "https://apps.apple.com/ph/app/shapeyou-fitness-nutrition/id1591572919",
       playStore: "https://play.google.com/store/apps/details?id=com.tiboInShape.shapeyou",
-      image: "https://images.unsplash.com/photo-1594882645126-14020914d58d?auto=format&fit=crop&q=80&w=800&h=500",
-    ),
-    Project(
-      id: 1,
-      title: "Cross-Platform Fintech App",
-      description:
-          "A secure, high-performance mobile application for managing personal finances, featuring real-time syncing and serverless backend infrastructure.",
-      tech: ["Flutter", "Dart", "Firebase", "State Management"],
-      github: "https://github.com/alnaughty",
-      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800&h=500",
-    ),
-    Project(
-      id: 2,
-      title: "Web3 Mini-Game",
-      description:
-          "An experimental 2D mobile game built with the Flame engine, integrating basic Web3 wallet connections for in-game assets.",
-      tech: ["Flutter", "Flame Engine", "Web3 Dart", "Smart Contracts"],
-      github: "https://github.com/alnaughty",
-      image: "https://images.unsplash.com/photo-1614624532983-4ce03382d63d?auto=format&fit=crop&q=80&w=800&h=500",
+      image: "assets/shapeyou.jpg",
     ),
     Project(
       id: 3,
