@@ -40,7 +40,11 @@ class ContactSection extends StatelessComponent {
       form(
         id: 'contact-form',
         classes: 'contact-form fade-in',
-        attributes: {'data-delay': '300'},
+        attributes: {
+          'data-delay': '300',
+          'action': 'https://formsubmit.co/ajax/${PersonalInfo.formSubmitToken}',
+          'method': 'POST',
+        },
         [
           // Name + Email row
           div(classes: 'form-row', [

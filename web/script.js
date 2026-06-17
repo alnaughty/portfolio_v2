@@ -261,13 +261,36 @@ document.addEventListener('DOMContentLoaded', () => {
       if (submitSpinner) submitSpinner.style.display = 'inline-block';
       if (submitCheck) submitCheck.style.display = 'none';
 
-      // Simulate send (replace with real API call)
-      setTimeout(() => {
-        submitBtn.classList.add('success');
-        submitText.textContent = 'Message Sent!';
-        if (submitSpinner) submitSpinner.style.display = 'none';
-        if (submitCheck) submitCheck.style.display = 'inline-block';
-        form.reset();
+      const actionUrl = form.getAttribute('action') || 'https://formsubmit.co/ajax/official.zeuscajurao@gmail.com';
+      const name = document.getElementById('contact-name').value;
+      const email = document.getElementById('contact-email').value;
+      const message = document.getElementById('contact-message').value;
+
+      fetch(actionUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          name: name,
+          email: email,
+          message: message
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success === 'true' || data.success === true) {
+          submitBtn.classList.add('success');
+          submitText.textContent = 'Message Sent!';
+          if (submitSpinner) submitSpinner.style.display = 'none';
+          if (submitCheck) submitCheck.style.display = 'inline-block';
+          form.reset();
+        } else {
+          submitText.textContent = 'Error sending!';
+          if (submitSpinner) submitSpinner.style.display = 'none';
+          submitBtn.disabled = false;
+        }
 
         setTimeout(() => {
           submitBtn.classList.remove('success');
@@ -275,7 +298,20 @@ document.addEventListener('DOMContentLoaded', () => {
           submitText.textContent = 'Send Message';
           if (submitCheck) submitCheck.style.display = 'none';
         }, 5000);
-      }, 1500);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        submitText.textContent = 'Error sending!';
+        if (submitSpinner) submitSpinner.style.display = 'none';
+        submitBtn.disabled = false;
+
+        setTimeout(() => {
+          submitBtn.classList.remove('success');
+          submitBtn.disabled = false;
+          submitText.textContent = 'Send Message';
+          if (submitCheck) submitCheck.style.display = 'none';
+        }, 5000);
+      });
     });
   }
 
