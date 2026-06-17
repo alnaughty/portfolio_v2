@@ -262,57 +262,60 @@ document.addEventListener('DOMContentLoaded', () => {
       if (submitCheck) submitCheck.style.display = 'none';
 
       const actionUrl = form.getAttribute('action') || 'https://formsubmit.co/ajax/official.zeuscajurao@gmail.com';
-      const name = document.getElementById('contact-name').value;
-      const email = document.getElementById('contact-email').value;
-      const message = document.getElementById('contact-message').value;
+
+      // Automatically grabs all fields with a 'name' attribute (name, email, message, _subject, etc.)
+      const formData = new FormData(form);
 
       fetch(actionUrl, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
           'Accept': 'application/json'
+          // Note: Do NOT set Content-Type header manually when sending FormData. 
+          // The browser will automatically set it to multipart/form-data with the correct boundary.
         },
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          message: message
-        })
+        body: formData
       })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success === 'true' || data.success === true) {
-          submitBtn.classList.add('success');
-          submitText.textContent = 'Message Sent!';
-          if (submitSpinner) submitSpinner.style.display = 'none';
-          if (submitCheck) submitCheck.style.display = 'inline-block';
-          form.reset();
-        } else {
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
+        .then(data => {
+          // FormSubmit returns string true "true" or boolean true depending on the exact endpoint block
+          if (data.success === 'true' || data.success === true) {
+            submitBtn.classList.add('success');
+            submitText.textContent = 'Message Sent!';
+            if (submitSpinner) submitSpinner.style.display = 'none';
+            if (submitCheck) submitCheck.style.display = 'inline-block';
+            form.reset();
+          } else {
+            throw new Error(data.message || 'FormSubmit parsing error');
+          }
+
+          setTimeout(() => {
+            resetButtonState();
+          }, 5000);
+        })
+        .catch(error => {
+          console.error('Error:', error);
           submitText.textContent = 'Error sending!';
           if (submitSpinner) submitSpinner.style.display = 'none';
           submitBtn.disabled = false;
-        }
 
-        setTimeout(() => {
-          submitBtn.classList.remove('success');
-          submitBtn.disabled = false;
-          submitText.textContent = 'Send Message';
-          if (submitCheck) submitCheck.style.display = 'none';
-        }, 5000);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        submitText.textContent = 'Error sending!';
-        if (submitSpinner) submitSpinner.style.display = 'none';
-        submitBtn.disabled = false;
-
-        setTimeout(() => {
-          submitBtn.classList.remove('success');
-          submitBtn.disabled = false;
-          submitText.textContent = 'Send Message';
-          if (submitCheck) submitCheck.style.display = 'none';
-        }, 5000);
-      });
+          setTimeout(() => {
+            resetButtonState();
+          }, 5000);
+        });
     });
+  }
+
+  // Helper to keep the timeout blocks DRY
+  function resetButtonState() {
+    if (submitBtn) {
+      submitBtn.classList.remove('success');
+      submitBtn.disabled = false;
+    }
+    if (submitText) submitText.textContent = 'Send Message';
+    if (submitCheck) submitCheck.style.display = 'none';
   }
 
   // ----------------------------------------------------------------
@@ -328,15 +331,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mousemove', (e) => {
       const { clientX, clientY } = e;
       const { innerWidth, innerHeight } = window;
-      
+
       const x = (clientX - innerWidth / 2) / 35;
       const y = (clientY - innerHeight / 2) / 35;
-      
+
       // Move hero image slightly
       if (heroImage) {
         heroImage.style.transform = `translate(${x}px, ${y}px)`;
       }
-      
+
       // Move floating badges in opposite direction for depth
       heroBadges.forEach((badge, i) => {
         const factor = (i + 1) * 1.5;

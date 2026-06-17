@@ -42,10 +42,16 @@ class ContactSection extends StatelessComponent {
         classes: 'contact-form fade-in',
         attributes: {
           'data-delay': '300',
-          'action': 'https://formsubmit.co/${PersonalInfo.email}',
+          'action': 'https://formsubmit.co/ajax/${PersonalInfo.email}',
           'method': 'POST',
         },
         [
+          input(
+            type: InputType.hidden,
+            name: '_captcha',
+            attributes: {'value': 'false'},
+          ),
+
           // Name + Email row
           div(classes: 'form-row', [
             div(classes: 'form-group', [
@@ -88,10 +94,12 @@ class ContactSection extends StatelessComponent {
             textarea(
               id: 'contact-message',
               name: 'message',
-              rows: 5,
               classes: 'form-textarea',
-              required: true,
-              placeholder: "Hello! I'd like to discuss...",
+              attributes: {
+                'rows': '5',
+                'placeholder': "Hello! I'd like to discuss...",
+                'required': '',
+              },
               [],
             ),
           ]),
